@@ -5,24 +5,24 @@ close all
 % 2017-12-02 Karl Hallberg
 % (ditt datum ditt namn)
 
-% Det som behövs göras som jag inte löste var att göra en pie() av de 10
-% mest frekventa bokstäverna i text-filen, min funktion slutar efter att
-% bokstäverna slutar vara jättefrekventa. Någon sorts funktion som räknar
-% igenom alla elementen krävs och sedan göra ett diagram av det
+% Det som behÃ¶vs gÃ¶ras som jag inte lÃ¶ste var att gÃ¶ra en pie() av de 10
+% mest frekventa bokstÃ¤verna i text-filen, min funktion slutar efter att
+% bokstÃ¤verna slutar vara jÃ¤ttefrekventa. NÃ¥gon sorts funktion som rÃ¤knar
+% igenom alla elementen krÃ¤vs och sedan gÃ¶ra ett diagram av det
 
-% Läser in en krypterad fil och gör den till
-% stora bokstäver samt konverterar dem till ASCII
+% LÃ¤ser in en krypterad fil och gÃ¶r den till
+% stora bokstÃ¤ver samt konverterar dem till ASCII
 fid = fopen('krypterad1.txt','rt');
 textOriginal = fscanf(fid,'%c',Inf);
 textUpper = upper(textOriginal);
 textAsc = double(textUpper);
-textTest = textAsc; % använder mig utav textTest för att kunna dekryptera från originaltext sedan
+textTest = textAsc; % anvÃ¤nder mig utav textTest fÃ¶r att kunna dekryptera frÃ¥n originaltext sedan
 
-% Kom på att mellanslag är 32 i ASCII så tar bort
-% dem från min array jag modifierar men den verkar EJ FUNGERA det verkar
-% inte behövas men det kan komma upp som en frekvent bokstav i små texter
-% så lär behöva fixa, find(textTest==0) = [] gissar jag skulle kunna
-% fungera på ngt sätt
+% Kom pÃ¥ att mellanslag Ã¤r 32 i ASCII sÃ¥ tar bort
+% dem frÃ¥n min array jag modifierar men den verkar EJ FUNGERA det verkar
+% inte behÃ¶vas men det kan komma upp som en frekvent bokstav i smÃ¥ texter
+% sÃ¥ lÃ¤r behÃ¶va fixa, find(textTest==0) = [] gissar jag skulle kunna
+% fungera pÃ¥ ngt sÃ¤tt
 
  i = 1;
  while i < length(textTest)
@@ -36,50 +36,50 @@ textTest = textAsc; % använder mig utav textTest för att kunna dekryptera från o
 textTest = sort(textTest);
 
 % mode kollar det mest frekventa tecknet i arrayn och jag kollar
-% efter det sedan tar jag bort den och alla andra förekomster från textTest
-% för att kunna skaffa en samling av mest frekventa bokstäver
+% efter det sedan tar jag bort den och alla andra fÃ¶rekomster frÃ¥n textTest
+% fÃ¶r att kunna skaffa en samling av mest frekventa bokstÃ¤ver
 throw = [];
 i = 1;
-while i < length(textTest) % den fortsätter tills det är bara bokstäver som förekommer lika många ggr eller väldigt få jag vet inte riktigt
-    M = mode(textTest);    % vilket var smidigt för mig för då har jag bara väldigt frekventa
+while i < length(textTest) % den fortsÃ¤tter tills det Ã¤r bara bokstÃ¤ver som fÃ¶rekommer lika mÃ¥nga ggr eller vÃ¤ldigt fÃ¥ jag vet inte riktigt
+    M = mode(textTest);    % vilket var smidigt fÃ¶r mig fÃ¶r dÃ¥ har jag bara vÃ¤ldigt frekventa
     if textTest(i) == M
-        textTest(textTest==M) = []; % söker alla förekomster av den mest frekventa och tar bort dem
-        throw = [throw M]; % lägger in dem i en egen array och använder nu längre inte textTest
+        textTest(textTest==M) = []; % sÃ¶ker alla fÃ¶rekomster av den mest frekventa och tar bort dem
+        throw = [throw M]; % lÃ¤gger in dem i en egen array och anvÃ¤nder nu lÃ¤ngre inte textTest
     end
     i = i + 1;
 end     
 
-% för k från 1 till antal frekventa bokstäver jag samlade på mig så testar
-% den från E som är 69 i ASCII, som är den mest frekventa bokstaven. Här
-% samlar jag då ett gäng rullningar som jag sedan testar flera av, ifall E
-% inte var det som förekom flest.
+% fÃ¶r k frÃ¥n 1 till antal frekventa bokstÃ¤ver jag samlade pÃ¥ mig sÃ¥ testar
+% den frÃ¥n E som Ã¤r 69 i ASCII, som Ã¤r den mest frekventa bokstaven. HÃ¤r
+% samlar jag dÃ¥ ett gÃ¤ng rullningar som jag sedan testar flera av, ifall E
+% inte var det som fÃ¶rekom flest.
 for k = 1:length(throw)
     throw(k) = (throw(k) - 69);
 end
 
-% skapar bara en vektor med alla rullningar som heter rullning, onödig
+% skapar bara en vektor med alla rullningar som heter rullning, onÃ¶dig
 % egentligen
 rullning = [];
 for k = 1:length(throw)
     rullning = [rullning throw(k)];
 end
 
-% skapar en matris med nollor som har lika många rader som rullningar, så
-% att jag kan testa flera olika rullningar i samma matris sedan men på
-% separata rader, längd av hela texten också
+% skapar en matris med nollor som har lika mÃ¥nga rader som rullningar, sÃ¥
+% att jag kan testa flera olika rullningar i samma matris sedan men pÃ¥
+% separata rader, lÃ¤ngd av hela texten ocksÃ¥
 dek = zeros(length(rullning), length(textAsc));
 
-% huvud-loopen håller på tills jag har slut på rullningar att försöka men
-% loopen inuti kör hela texten, där den då byter ut ASCII i originaltexten
-% mot ASCII ifrån mina rullningar, if-else och det är för att de rullar
-% över från Z till B t.ex. och hade fått en ASCII som ej stämde, alfabetet
-% går från A=65 till Z=90
+% huvud-loopen hÃ¥ller pÃ¥ tills jag har slut pÃ¥ rullningar att fÃ¶rsÃ¶ka men
+% loopen inuti kÃ¶r hela texten, dÃ¤r den dÃ¥ byter ut ASCII i originaltexten
+% mot ASCII ifrÃ¥n mina rullningar, if-else och det Ã¤r fÃ¶r att de rullar
+% Ã¶ver frÃ¥n Z till B t.ex. och hade fÃ¥tt en ASCII som ej stÃ¤mde, alfabetet
+% gÃ¥r frÃ¥n A=65 till Z=90
 i = 1;
 while i <= length(rullning)
     for k = 1:length(textAsc)
-        if textAsc(k)>64 && textAsc(k)<91%rullar bara om värdet motsvarar en verbal bokstav.
-                                          %vet inte hur jag ska få radbryten att fungera
-          dek(i,k) = textAsc(k) - rullning(i); % rullar bak k:te elementet på den raden som stämmer med den specifika rullningen
+        if textAsc(k)>64 && textAsc(k)<91%rullar bara om vÃ¤rdet motsvarar en stor bokstav.
+                                          %vet inte hur jag ska fÃ¥ radbryten att fungera
+          dek(i,k) = textAsc(k) - rullning(i); % rullar bak k:te elementet pÃ¥ den raden som stÃ¤mmer med den specifika rullningen
           if dek(i,k) <= 64
               dek(i,k) = dek(i,k) + 26;
           elseif dek(i,k) > 90
@@ -92,8 +92,8 @@ while i <= length(rullning)
     i = i + 1;
 end
 
-% här skriver jag bara in det avkrypterade in i en egen fil för det var
-% rätt så stora texter och jag trodde det skulle hjälpa med formatteringen
+% hÃ¤r skriver jag bara in det avkrypterade in i en egen fil fÃ¶r det var
+% rÃ¤tt sÃ¥ stora texter och jag trodde det skulle hjÃ¤lpa med formatteringen
 dekrypterad = fopen('dekrypterad.txt','w');
-fprintf(dekrypterad, char(dek)); %char gör om till bokstäver igen från ASCII
+fprintf(dekrypterad, char(dek)); %char gÃ¶r om till bokstÃ¤ver igen frÃ¥n ASCII
 fclose(dekrypterad);
