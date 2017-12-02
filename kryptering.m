@@ -77,7 +77,7 @@ dek = zeros(length(rullning), length(textAsc));
 i = 1;
 while i <= length(rullning)
     for k = 1:length(textAsc)
-        if textAsc(k)>64 && textAsc(k)<91%rullar bara om värdet motsvarar en stor bokstav.
+        if textAsc(k)>64 && textAsc(k)<91%rullar bara om värdet motsvarar en versal bokstav.
                                           %vet inte hur jag ska få radbryten att fungera
           dek(i,k) = textAsc(k) - rullning(i); % rullar bak k:te elementet på den raden som stämmer med den specifika rullningen
           if dek(i,k) <= 64
@@ -92,8 +92,5 @@ while i <= length(rullning)
     i = i + 1;
 end
 
-% här skriver jag bara in det avkrypterade in i en egen fil för det var
-% rätt så stora texter och jag trodde det skulle hjälpa med formatteringen
-dekrypterad = fopen('dekrypterad.txt','w');
-fprintf(dekrypterad, char(dek)); %char gör om till bokstäver igen från ASCII
-fclose(dekrypterad);
+disp(char(dek))
+
