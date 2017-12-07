@@ -10,6 +10,9 @@ close all
 % bokstäverna slutar vara jättefrekventa. Någon sorts funktion som räknar
 % igenom alla elementen krävs och sedan göra ett diagram av det
 
+% RÄKNA: mode(), ~mode(), iterativ plocka bort medans måste välja om det är lika antal (2) av koderna kvar efter den
+% har plockat ut mode()
+
 % Läser in en krypterad fil och gör den till
 % stora bokstäver samt konverterar dem till ASCII
 fid = fopen('krypterad1.txt','rt');
