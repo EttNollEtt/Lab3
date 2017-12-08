@@ -28,7 +28,7 @@ for k = 1:10
     M = mode(textTest);
     antal=length(textTest==M);
     for i = 1:antal
-    throw = [throw M];
+        throw = [throw M];
     end
     textTest(textTest==M) = [];
 end
