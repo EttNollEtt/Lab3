@@ -3,7 +3,7 @@ clear all
 close all
 % Lab 3
 % 2017-12-02 Karl Hallberg
-% (ditt datum ditt namn)
+% 2017-12-09 Kevin Kihlström
 
 % Det som behövs göras som jag inte löste var att göra en pie() av de 10
 % mest frekventa bokstäverna i text-filen, min funktion slutar efter att
@@ -17,6 +17,7 @@ textOriginal = fscanf(fid,'%c',Inf);
 textUpper = upper(textOriginal);
 textAsc = double(textUpper);
 textTest = textAsc; % använder mig utav textTest för att kunna dekryptera från originaltext sedan
+textTestPaj = textAsc; %skapar en ny för att underlätta
 
 % Kom på att mellanslag är 32 i ASCII så tar bort
 % dem från min array jag modifierar men den verkar EJ FUNGERA det verkar
@@ -92,5 +93,34 @@ while i <= length(rullning)
     i = i + 1;
 end
 
-disp(char(dek))
+ i = 1;  %Gör samma som ovan
+ while i < length(textTestPaj)
+      if textTestPaj(i) == 32
+         textTestPaj(i) = [];
+     end
+     i = i + 1;
+ end
 
+throw=[];
+for k = 1:10 %hittar de 10 vanligaste
+    M = mode(textTestPaj);
+    antal = length(textTestPaj==M); %antalet av bokstäverna liggs till i throw
+    for i = 1:antal
+        throw = [throw M];
+    end
+    textTestPaj(textTestPaj==M) = []; %tar bort bokstaven som den lade in i throw
+end
+
+
+for k = 1:10
+    M = mode(throw); %tar den vanligaste bokstaven i throw
+    namn(k) = M; %lägger till den i namn som ASCII
+    L = length(throw==M); %antalet av bokstaven
+    delar(k) = L ; %denna ger proportionerna på diagrammet 
+    throw(throw==M) = []; %tar bort fråm throw
+    labels{1,k} = char(namn(k)); %lägger in bokstäverna i en cell arrray
+end
+
+pie(delar, labels) 
+
+disp(char(dek))
