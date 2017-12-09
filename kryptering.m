@@ -12,7 +12,7 @@ close all
 
 % Läser in en krypterad fil och gör den till
 % stora bokstäver samt konverterar dem till ASCII
-fid = fopen('krypterad1.txt','rt');
+fid = fopen('krypterad3.txt','rt');
 textOriginal = fscanf(fid,'%c',Inf);
 textUpper = upper(textOriginal);
 textAsc = double(textUpper);
@@ -24,14 +24,18 @@ textTestPaj = textAsc; %skapar en ny för att underlätta
 % inte behövas men det kan komma upp som en frekvent bokstav i små texter
 % så lär behöva fixa, find(textTest==0) = [] gissar jag skulle kunna
 % fungera på ngt sätt
+% 
+%  i = 1;
+%  while i < length(textTest)
+%       if textTest(i) == 32
+%          textTest(i) = [];
+%      end
+%      i = i + 1;
+%  end
+%  
+%Tar bort mellanslag
+textTest = textTest(find(textTest~=32));
 
- i = 1;
- while i < length(textTest)
-      if textTest(i) == 32
-         textTest(i) = [];
-     end
-     i = i + 1;
- end
  
 % Sorterar i storleksordning
 textTest = sort(textTest);
@@ -78,8 +82,7 @@ dek = zeros(length(rullning), length(textAsc));
 i = 1;
 while i <= length(rullning)
     for k = 1:length(textAsc)
-        if textAsc(k)>64 && textAsc(k)<91%rullar bara om värdet motsvarar en versal bokstav.
-                                         
+        if textAsc(k)>64 && textAsc(k)<91%rullar bara om värdet motsvarar en versal bokstav.                               
           dek(i,k) = textAsc(k) - rullning(i); % rullar bak k:te elementet på den raden som stämmer med den specifika rullningen
           if dek(i,k) <= 64
               dek(i,k) = dek(i,k) + 26;
@@ -93,13 +96,8 @@ while i <= length(rullning)
     i = i + 1;
 end
 
- i = 1;  %Gör samma som ovan
- while i < length(textTestPaj)
-      if textTestPaj(i) == 32
-         textTestPaj(i) = [];
-     end
-     i = i + 1;
- end
+
+ textTestPaj = textTestPaj(find(textTestPaj~=32));
 
 throw=[];
 for k = 1:10 %hittar de 10 vanligaste
